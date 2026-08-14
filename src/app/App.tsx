@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useEngine, phaseLabel } from './useEngine.ts';
 import { DropZone } from './components/DropZone.tsx';
 import { ColumnTable } from './components/ColumnTable.tsx';
@@ -25,9 +25,16 @@ export function App() {
   const engine = useEngine();
   const { state, options, setOptions, busy } = engine;
   const [tab, setTab] = useState<Tab>('columns');
+  const mainRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    if (state.result) setTab('result');
+    if (!state.result) return;
+    setTab('result');
+    // 縦積みレイアウト（スマホ・タブレット）では結果が設定パネルの下に来て
+    // 画面外になるため、結果までスクロールする
+    if (window.innerWidth <= 1000) {
+      mainRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }, [state.result]);
 
   useEffect(() => {
@@ -79,18 +86,24 @@ export function App() {
             <circle cx="23" cy="9" r="3.5" fill="#0f9d76" />
             <circle cx="19" cy="23" r="5.5" fill="#f5871f" />
           </svg>
-          <span>
-            AIクラスタリング
-            <br />
+          <span className="brand-text">
+            <b>AIクラスタリング</b>
             <small>CSV を投げるだけでセグメント分け</small>
           </span>
         </div>
 
+        {/* 狭い画面では別行に回り込む（CSS の order で並べ替え） */}
+        <span className="privacy-badge">
+          <span aria-hidden="true">🔒</span> データは端末内で処理
+        </span>
+
         {state.meta && (
           <div className="topbar-file">
             <strong title={state.meta.name}>{state.meta.name}</strong>
-            <span>
-              {formatBytes(state.meta.size)} / 約{state.meta.estimatedRows.toLocaleString()}行 /{' '}
+            <span className="file-meta">
+              {formatBytes(state.meta.size)} / 約{state.meta.estimatedRows.toLocaleString()}行
+            </span>
+            <span className="file-meta file-meta-extra">
               {state.meta.encoding.toUpperCase()} /{' '}
               {state.meta.delimiter === '\t' ? 'タブ区切り' : `「${state.meta.delimiter}」区切り`}
             </span>
@@ -99,11 +112,6 @@ export function App() {
             </button>
           </div>
         )}
-
-        <div className="topbar-spacer" />
-        <span className="privacy-badge">
-          <span aria-hidden="true">🔒</span> データは端末内で処理
-        </span>
       </header>
 
       {!state.meta ? (
@@ -130,7 +138,7 @@ export function App() {
             />
           </aside>
 
-          <main className="main">
+          <main className="main" ref={mainRef}>
             {state.error && <div className="notice error">{state.error}</div>}
             {state.warnings.length > 0 && (
               <div className="notice warn">

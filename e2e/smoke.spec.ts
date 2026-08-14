@@ -91,3 +91,32 @@ test('セグメント付き CSV をダウンロードできる', async ({ page }
   ]);
   expect(download.suggestedFilename()).toContain('_segments.csv');
 });
+
+// スマートフォン幅でヘッダーが崩れないこと。
+// flex の 1 行レイアウトのままだと各要素が潰れて 1 文字ずつ改行され、
+// ヘッダーだけで画面が埋まってしまう回帰があったため固定で確認する。
+test('スマートフォン幅でヘッダーが崩れない', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  await page.getByRole('button', { name: /デモデータで試す/ }).click();
+  await expect(page.getByRole('tab', { name: /列の設定/ })).toBeVisible();
+
+  const metrics = await page.evaluate(() => {
+    const topbar = document.querySelector('.topbar') as HTMLElement;
+    return {
+      topbarHeight: topbar.getBoundingClientRect().height,
+      docWidth: document.documentElement.scrollWidth,
+      winWidth: window.innerWidth,
+    };
+  });
+
+  // ヘッダーは 2 行程度に収まること（崩れると 500px 超になる）
+  expect(metrics.topbarHeight).toBeLessThan(140);
+  // 横スクロールが発生しないこと
+  expect(metrics.docWidth).toBeLessThanOrEqual(metrics.winWidth);
+
+  // ボタン類が途中で折り返していないこと（1 行に収まる高さか）
+  const resetButton = page.getByRole('button', { name: '別のファイル' });
+  const box = await resetButton.boundingBox();
+  expect(box!.height).toBeLessThan(34);
+});
