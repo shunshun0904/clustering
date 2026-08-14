@@ -1,9 +1,9 @@
 {
-  "name": "segmentlab",
+  "name": "ai-clustering",
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "ブラウザだけで完結する、テーブルデータの自動クラスタリング（顧客セグメンテーション）アプリ",
+  "description": "AIクラスタリング — ブラウザだけで完結する、テーブルデータの自動クラスタリング（顧客セグメンテーション）アプリ",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

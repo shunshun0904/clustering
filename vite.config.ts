@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// GitHub Pages などサブパス配信をする場合は VITE_BASE=/segmentlab/ を渡す
+// GitHub Pages などサブパス配信をする場合は VITE_BASE=/<リポジトリ名>/ を渡す
 export default defineConfig({
   base: process.env.VITE_BASE ?? '/',
   plugins: [react()],

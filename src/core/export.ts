@@ -229,7 +229,7 @@ export function buildSummaryMarkdown(result: ClusterResult, fileName: string): B
 
   lines.push('---');
   lines.push('');
-  lines.push('SegmentLab で生成。データはブラウザ内でのみ処理されています。');
+  lines.push('AIクラスタリングで生成。データはブラウザ内でのみ処理されています。');
 
   return new Blob([lines.join('\n')], { type: 'text/markdown;charset=utf-8' });
 }

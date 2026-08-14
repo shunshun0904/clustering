@@ -80,9 +80,9 @@ export function App() {
             <circle cx="19" cy="23" r="5.5" fill="#f5871f" />
           </svg>
           <span>
-            SegmentLab
+            AIクラスタリング
             <br />
-            <small>テーブルデータ自動クラスタリング</small>
+            <small>CSV を投げるだけでセグメント分け</small>
           </span>
         </div>
 
@@ -198,7 +198,7 @@ export function App() {
       )}
 
       <footer className="footer">
-        SegmentLab — すべての計算はブラウザ内（Web Worker）で行われ、データが外部へ送信されることはありません。
+        AIクラスタリング — すべての計算はブラウザ内（Web Worker）で行われ、データが外部へ送信されることはありません。
       </footer>
     </div>
   );

@@ -162,7 +162,7 @@ async function handleExport(kind: ExportKind, requestId: number) {
   if (!state.result || !state.dataset || !state.source || !state.inspect) {
     throw new Error('先にクラスタリングを実行してください。');
   }
-  const base = state.fileName.replace(/\.[^.]+$/, '') || 'segmentlab';
+  const base = state.fileName.replace(/\.[^.]+$/, '') || 'clustering';
 
   if (kind === 'labeled-csv') {
     progress(requestId, 'export', 0.1, '元データにセグメント列を追加中');
