@@ -6,6 +6,9 @@
 **すべての計算はブラウザ内（Web Worker）で完結し、データが外部に送信されることはありません。**
 顧客リストのような持ち出しにくいデータでも、サーバーにアップロードせずに分析できます。
 
+**▶ 今すぐ試す: https://shunshun0904.github.io/clustering/**
+（インストール不要。「デモデータで試す」ボタンから動作を確認できます）
+
 ![結果画面](docs/screenshot-result.png)
 
 <details>
@@ -144,9 +147,8 @@ npm run typecheck
 `main` への push で GitHub Pages に自動デプロイされます（`.github/workflows/deploy.yml`）。
 サブパス配信のため、ビルド時に `VITE_BASE=/<リポジトリ名>/` を渡しています（ワークフローが自動で埋めます）。
 
-このリポジトリの場合の公開 URL は `https://shunshun0904.github.io/clustering/` です。
-Settings → Pages で Source を「GitHub Actions」にすると有効になります
-（private リポジトリで Pages を使うには有料プランが必要です）。
+公開先は https://shunshun0904.github.io/clustering/ です。
+Settings → Pages の Source を「GitHub Actions」にしてある必要があります。
 
 静的ファイルなので、任意のホスティング（S3、Netlify、社内サーバーなど）にそのまま置けます。
 
