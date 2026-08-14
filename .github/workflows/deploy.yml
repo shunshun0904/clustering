@@ -19,6 +19,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # 配信サブパスは Pages 側の設定から取る（リポジトリ名を決め打ちしない）
+      - uses: actions/configure-pages@v5
+        id: pages
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -26,8 +29,7 @@ jobs:
       - run: npm ci
       - run: npm run build
         env:
-          VITE_BASE: /${{ github.event.repository.name }}/
-      - uses: actions/configure-pages@v5
+          VITE_BASE: ${{ steps.pages.outputs.base_path }}/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
